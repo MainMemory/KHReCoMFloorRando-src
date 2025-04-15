@@ -15,6 +15,8 @@ Random random = new Random(seed);
 Archive arc = new Archive("SY0001.BIN");
 for (int story = 1; story < 3; story++)
 {
+	int minRooms = settings.MinRooms;
+	int maxRooms = settings.MaxRooms;
 	var floors = FloorLayout.ReadFloorData(arc[$"Rooms{story}.BIN"]);
 	foreach (var floor in floors)
 	{
@@ -27,7 +29,7 @@ for (int story = 1; story < 3; story++)
 			Console.WriteLine("Floor: {0}", floor.ID);
 #endif
 			floor.Rooms.Clear();
-			int numrooms = Math.Max(Math.Min(random.Next(settings.MinRooms, settings.MaxRooms + 1), 30), sprooms.Length + 3);
+			int numrooms = Math.Max(Math.Min(random.Next(minRooms, maxRooms + 1), 30), sprooms.Length + 3);
 			int spstart = numrooms - sprooms.Length;
 			if (settings.ConnectedRooms)
 			{
@@ -392,8 +394,8 @@ for (int story = 1; story < 3; story++)
 		}
 		if (settings.ProgressiveSize)
 		{
-			settings.MinRooms = Math.Min(settings.MinRooms + 1, 30);
-			settings.MaxRooms = Math.Min(settings.MaxRooms + 1, 30);
+			minRooms = Math.Min(minRooms + 1, 30);
+			maxRooms = Math.Min(maxRooms + 1, 30);
 		}
 	}
 	arc[$"Rooms{story}.BIN"] = FloorLayout.WriteFloorData(floors);
